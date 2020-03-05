@@ -1,0 +1,18 @@
+﻿<nav class="navbar navbar-inverse" style="border-radius: 0px;" *ngIf="currentUser">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" routerLink="/">Developer Tool</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <!-- <li class="active"><a routerLink="/segment">Segment</a></li> -->
+        <li><a routerLink="/xml_maker">XML Maker</a></li>
+        <!-- <li><a routerLink="#">Live Logs</a></li> -->
+      </ul>
+       <ul class="nav navbar-nav navbar-right">
+        <li><a (click)="logout()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+</nav>
+<!-- main app container -->
+<!-- <alert></alert> -->
+<router-outlet></router-outlet>

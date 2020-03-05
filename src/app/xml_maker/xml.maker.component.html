@@ -1,0 +1,117 @@
+﻿<div class="container" style="width: 95%;">
+    <div class="row">
+		<div class="col-sm-12">
+			<h2 style="text-align: center;">Response Message :- {{message}} </h2>
+			<div class="tabbable-panel">
+				<div class="tabbable-line">
+					<ul class="nav nav-tabs ">
+						<li class="active">
+							<a href="#tab_default_1" data-toggle="tab"><b>Xml With-Out File</b></a>
+						</li>
+						<!-- <li>
+							<a href="#tab_default_2" data-toggle="tab"><b>Xml With File</b></a>
+						</li> -->
+						<li>
+							<a href="#tab_default_3" data-toggle="tab"><b>Output Result</b></a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active panel-body" id="tab_default_1">
+							<div class="row" style="margin-top: 10px;">
+								<div class="col-sm-12" style="overflow-y: scroll;max-height: 500px;">
+								   <form [formGroup]="xmlForm" (ngSubmit)="submintTageForms(xmlForm.value)" #uploadDocumentsForm="ngForm" ngNativeValidate>
+										<div class="row">
+											<div class="col-sm-6">
+												<input type="url" class="form-control" formControlName="url" style="padding:4px 12px;" placeholder="Enter Target Url">
+											</div>
+											<div class="col-sm-2">
+												<button class="btn btn-sm btn-success" type="button" title="Add More" (click)="tageFormsAddItem()">Add More</button>
+											</div>	
+											<div class="col-sm-4 form-check" style="float: right;">
+													<label class="form-check-label" >Page Url</label>
+													<input class="form-check-input" style="margin-left: 5px;" type="checkbox" name="page_url" formControlName="page_url" value="page_url" >&nbsp;
+													<label class="form-check-label" >Html Cdata</label>
+													<input class="form-check-input" style="margin-left: 5px;" type="checkbox" name="html_cdata" formControlName="html_cdata" value="html_cdata" >&nbsp;
+													<label class="form-check-label" >Html</label>
+													<input class="form-check-input" style="margin-left: 5px;" type="checkbox" name="html" formControlName="html" value="html" >&nbsp;
+													<label class="form-check-label" >Screen Shoot</label>
+													<input class="form-check-input" style="margin-left: 5px;" type="checkbox" name="pdf" formControlName="pdf" value="pdf" >&nbsp;
+											</div>	  
+										</div>
+										<br>
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="main-form-content" formArrayName="tags">
+												   <table id="tbl-upload" class="table table-bordered">
+													  <tbody *ngFor="let tag of xmlForm.get('tags')['controls']; let i = index;" [formGroup]="tag">
+														 <tr *ngIf="i==0" class="active">
+															<th>#</th>
+															<th>Tag Name</th>
+															<th>Parent Tag</th>
+															<th>Html Tag</th>
+															<th style="width: 1px;">CData</th>
+															<th style="text-align: center;">Remove</th>
+														 </tr>
+														 <tr>
+															<td>
+															   <b>{{i}}</b>
+															</td>
+															<td>
+															   <input type="text" class="form-control" name="tag_name" formControlName="tag_name" placeholder="Enter Tag Name">
+															</td>
+															<td>
+															   <input type="text" class="form-control" name="parent_tag" formControlName="parent_tag" placeholder="Enter Parent Tag If Any">
+															</td>
+															<td>
+															   <input type="text" class="form-control" name="html_tag" formControlName="html_tag" placeholder="Enter Lookup Tag">
+															</td>
+															<td style="text-align: center;">
+															   <input class="form-check-input" type="checkbox" name="cdata" formControlName="cdata" value="cdata" >
+															</td>
+															<td class="remove" style="text-align: center;">
+															   <button type="button" class="btn btn-link" (click)="tageFormRemoveItem(i)">Delete</button>
+															</td>
+														 </tr>                        
+													  </tbody>
+												   </table>
+												</div>
+											</div>			   
+										</div>
+										<input type="submit" class="form-control" value="Show Xml OutPut" [disabled]="xmlForm?.invalid">
+								   </form>
+								</div>
+							 </div>
+						</div>
+						<!-- Xml With File -->
+						<div class="tab-pane" id="tab_default_2">
+							<div class="row">
+								<div class="col-sm-12">
+								   <form [formGroup]="fileForm" (ngSubmit)="parseXMLFile()">
+									  <div class="col-sm-6">
+										 	<label>XML File</label>
+										 	<input type="file" class="form-control" formControlName="file" style="padding:4px 12px;" (change)="addFile($event.target.files[0])" placeholder="Enter Xml File" accept=".xml">
+									  </div>
+									  <div class="col-sm-3">
+											<input type="submit" class="form-control" value="Open" [disabled]="fileForm?.invalid" style="width:90%;margin-top:23px;">
+									  </div>
+								   </form>
+								</div>
+							 </div>
+						</div>
+						<div class="tab-pane" id="tab_default_3">
+							<div class="row panel-body">
+								<div class="col-sm-12" style="font-size:12px;font-family:monospace;white-space:pre;height:400px;overflow:auto;border-color: #ddd;background-color: #ddd;">
+									<br>
+									{{xmlString | xml}}
+									
+								</div>
+								<button style="width: 100%;height: 40px" class="btn btn-sm btn-info" (click)="createFile()"><b>Downalod XML File</b></button>
+							 </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
