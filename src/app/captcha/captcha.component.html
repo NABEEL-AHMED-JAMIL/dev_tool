@@ -1,0 +1,91 @@
+﻿<div class="container" style="width: 95%;">
+    <div class="row">
+		<div class="col-sm-12">
+            <h2 style="text-align: center;">Response Message :- {{message}} </h2>
+			<div class="tabbable-panel">
+				<div class="tabbable-line">
+					<ul class="nav nav-tabs ">
+						<li class="active"><a href="#tab_default_1" data-toggle="tab"><b>Image Captcha</b></a></li>
+						<li><a href="#tab_default_2" data-toggle="tab"><b>Voice Captcha</b></a></li>
+					</ul>
+					<div class="tab-content" style="padding: 0px;">
+						<div class="tab-pane active panel-body row" id="tab_default_1">
+                            <div class="col-sm-9" style="border-right: 1px solid #eee;">
+                                <form [formGroup]="imageCaptchaForm" (ngSubmit)="processImg()">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <label>Captcha Image File</label>
+                                            <input type="file" class="form-control" formControlName="file" style="padding:4px 12px;" (change)="addFile($event.target.files[0])" placeholder="Enter Xml File" accept="image/*">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label>Process Type</label>
+                                            <select formControlName="process" class="form-control">
+                                                <option [value]="process" *ngFor="let process of process_type"> {{process}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label>Thresh</label>
+                                            <input type="number" class="form-control" formControlName="thresh" style="padding:4px 12px;" placeholder="Enter Thresh Value (0-150)" min="0" max="150">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label>Background</label>
+                                            <input type="number" class="form-control" formControlName="background" style="padding:4px 12px;"  placeholder="Enter Backgroud" min="0" max="250">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label>Image Size</label>
+                                            <input type="number" class="form-control" formControlName="size" style="padding:4px 12px;"  placeholder="Enter Image Size" min="1" max="5">
+                                      </div>
+                                        <div class="col-sm-3">
+                                            <input type="submit" class="form-control" value="Process Image" [disabled]="imageCaptchaForm?.invalid" style="width:90%;margin-top:23px;">
+                                        </div>
+                                    </div>
+                                 </form>
+                            </div>
+                            <div class="col-sm-3">
+                                <h4 style="text-align: center;">Decode Text</h4>
+                                <div *ngIf="decode_text_message">
+                                    <hr>
+                                    <p style="text-align: center;" >{{decode_text_message}}</p>
+                                    <hr>
+                                </div>
+                                <div *ngIf="imgURL">
+                                    <p><b>Real Image</b></p>
+                                    <img [src]="imgURL" height="100px" width="295px">
+                                    <hr>
+                                </div>
+                                <div *ngIf="decode_image">
+                                    <p><b>Process Image</b></p>
+                                    <img [src]="decode_image" height="100px" width="295px">
+                                </div>
+                            </div>
+						</div>
+						<div class="tab-pane panel-body row" id="tab_default_2">
+                            <div class="col-sm-9" style="border-right: 1px solid #eee;">
+                                <form [formGroup]="voiceCaptchaForm" (ngSubmit)="processImg()">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <label>Captcha Image File</label>
+                                            <input type="file" class="form-control" formControlName="file" style="padding:4px 12px;" (change)="addFile($event.target.files[0])" placeholder="Enter Xml File" accept="image/*">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="submit" class="form-control" value="Process Image" [disabled]="voiceCaptchaForm?.invalid" style="width:90%;margin-top:23px;">
+                                        </div>
+                                    </div>
+                                 </form>
+                            </div>
+                            <div class="col-sm-3">
+                                <h4 style="text-align: center;">Decode Text</h4>
+                                <hr>
+                                <p *ngIf="decode_voice_message">{{decode_voice_message}}</p>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
