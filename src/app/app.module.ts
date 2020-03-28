@@ -11,6 +11,7 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 import { XMLMakerComponent } from './xml_maker';
+import { AuthorityComponent } from './authority';
 import { CaptchaComponent } from './captcha';
 import { SegmentComponent } from './segment';
 import { LoginComponent } from './login';
@@ -29,6 +30,7 @@ import { AlertComponent } from './_components';
         AppComponent,
         HomeComponent,
         XMLMakerComponent,
+        AuthorityComponent,
         CaptchaComponent,
         SegmentComponent,
         LoginComponent,
