@@ -14,7 +14,7 @@ const routes: Routes = [
     { path: 'segment', component: SegmentComponent, canActivate: [AuthGuard] },
     { path: 'xml_maker', component: XMLMakerComponent, canActivate: [AuthGuard] },
     { path: 'authority', component: AuthorityComponent, canActivate: [AuthGuard] },
-    { path: 'captcha', component: CaptchaComponent, canActivate: [AuthGuard] },
+    { path: 'image-process', component: CaptchaComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     // otherwise redirect to home

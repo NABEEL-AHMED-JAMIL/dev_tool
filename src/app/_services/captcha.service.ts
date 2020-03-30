@@ -7,6 +7,6 @@ export class CaptchaService {
     constructor(private http: HttpClient) { }
 
     getProcessImage(object: any) {
-        return this.http.post('http://localhost:9096/api/img-process/captcha/image-text-reader', object);
+        return this.http.post('http://localhost:9098/api/converter/captcha/image-text-reader', object);
     }
 }
