@@ -3,6 +3,7 @@ export interface AuthorityDto {
     name?: string;
     description?: string;
     filename?: string;
+    authorityDetail?:any;
 }
 
 export interface AuthorityDetailDto {

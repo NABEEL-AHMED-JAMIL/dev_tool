@@ -11,121 +11,67 @@
 					<div class="tab-content">
 						<div class="tab-pane active panel-body" id="tab_default_1">
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <form>
-                                        <div class="col-sm-6">
-                                            <label>Add Authority</label>
-                                            <input type="text" class="form-control" style="padding:4px 12px;" placeholder="Enter Authority">
-                                        </div>
-                                        <div class="col-sm-2" style="margin-left: -24px;">
-                                            <input type="submit" class="form-control" value="Add" style="margin-top:24px;background: #f3565d;color: white;width: 65px;">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px;">
-                                <div class="col-sm-12">
-                                    <div class="col-sm-6">
-                                        <div style="width: 70%;">
-                                            <h3>Authority List</h3>
-                                            <div class="panel-group" id="accordion">
+                                <!-- <h3 style="text-align: center;">Response Message :- {{message}} </h3>
+                                <br> -->
+                                <h2 style="text-align: center;">Authority List</h2>
+                                <br>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-11">
+                                            <form [formGroup]="authorityForm" (ngSubmit)="submint(authorityForm.value)" #uploadDocumentsForm="ngForm" ngNativeValidate>
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">New List</a>
-                                                        </h4>
+                                                        <label>Add Authority</label>
+                                                        <input type="text" class="form-control" formControlName="name" style="padding:4px 12px;width: 85%;" placeholder="Enter Authority">
+                                                        <input type="button" class="form-control" value="CSV" style="background: #f3565d;color:white;width: 70px;float: right;margin-top: -35px;" (click)="inputUpload.click()"> 
+                                                        <input type="file" #inputUpload  accept=".csv" (change)="bulkUpload($event)" style="overflow: hidden;opacity: 0;right: 0;top: 0;">
+                                                        <button type="button" (click)="authortyDetailsFormsAddItem()"
+                                                            class="btn btn-default"
+                                                            style="width:40px;height:40px;line-height: 1.33;border-radius: 25px;float: right;background: #f3565d;color: white;margin-right: 5px;"><b>+</b></button>
+                                                        <br><br>
                                                     </div>
-                                                    <div id="collapse1" class="panel-collapse collapse">
-                                                        <div class="panel-body" style="max-height: 250px;overflow-y: scroll; padding: 0px;">
-                                                            <ul class="list-group" style="margin-bottom: 0px;">
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                    <div class="panel-body" style="max-height: 275px;overflow-y: scroll; padding: 0px;">
+                                                        <ul class="list-group" style="margin-bottom: 0px;" formArrayName="authorityDetail">
+                                                            <li *ngFor="let authorty_detail of authorityForm.get('authorityDetail')['controls']; let i = index;" [formGroup]="authorty_detail"
+                                                                class="list-group-item"
+                                                                style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+                                                                <input type="text" class="form-control" formControlName="name" placeholder="Enter Company Name">
+                                                                <button class="btn" style="float: right;background: #f3565d;color:white;margin-top: -34px;width: 45px;" (click)="authortyDetailsFormsRemoveItem(i)">X</button>
+                                                            </li>
+                                                        </ul>
                                                     </div>
+                                                    <input type="submit" class="form-control" value="Save" style="margin-top:24px;background: #f3565d;color:white;width: 70px;float: right;margin-right: 10px;" [disabled]="authorityForm?.invalid"> 
                                                 </div>
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Assign List</a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse2" class="panel-collapse collapse in">
-                                                        <div class="panel-body" style="max-height: 250px;overflow-y: scroll; padding: 0px;">
-                                                            <ul class="list-group" style="margin-bottom: 0px;">
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                                <li class="list-group-item hover_list" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                    <b>First item</b>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> 
+                                            </form>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <h3>Company List</h3>
+                                </div>
+                                <!-- this is oky no more need to change -->
+                                <div class="col-sm-4" *ngIf="authorityList">
+                                    <div class="panel-group" id="accordion">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
-                                                <form style="margin-top: -20px;">
-                                                    <input type="text" class="form-control" style="width: 50%;display: inline;" placeholder="Enter Company">
-                                                    <input type="submit" class="form-control" value="Add" style="margin-top:24px;background: #f3565d;color: white;width: 65px;display: inline">
-                                                </form>
-                                               <input type="submit" class="form-control" value="CSV" style="margin-top:24px;background: #f3565d;color:white;width: 65px;float: right; margin-top: -35px;"> 
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Assign List</a>
+                                                </h4>
                                             </div>
-                                            <div id="collapse2" class="panel-collapse collapse in">
-                                                <div class="panel-body" style="max-height: 275px;overflow-y: scroll; padding: 0px;">
+                                            <div id="collapse1" class="panel-collapse collapse in">
+                                                <div class="panel-body" style="max-height: 250px;overflow-y: scroll; padding: 0px;">
                                                     <ul class="list-group" style="margin-bottom: 0px;">
-                                                        <li class="list-group-item" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                            <b>First item</b>
-                                                            <button class="btn" style="float: right;margin-top: -7px; background: #f3565d;color:white;">X</button>
-                                                        </li>
-                                                        <li class="list-group-item" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                            <b>First item</b>
-                                                            <button class="btn" style="float: right;margin-top: -7px; background: #f3565d;color:white;">X</button>
-                                                        </li>
-                                                        <li class="list-group-item" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                            <b>First item</b>
-                                                            <button class="btn" style="float: right;margin-top: -7px; background: #f3565d;color:white;">X</button>
-                                                        </li>
-                                                        <li class="list-group-item" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                            <b>First item</b>
-                                                            <button class="btn" style="float: right;margin-top: -7px; background: #f3565d;color:white;">X</button>
-                                                        </li>
-                                                        <li class="list-group-item" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                            <b>First item</b>
-                                                            <button class="btn" style="float: right;margin-top: -7px; background: #f3565d;color:white;">X</button>
+                                                        <li *ngFor="let authority of authorityList"
+                                                            (click)="getAuthorityDetailByAuthorityId(authority.id)"  
+                                                            class="list-group-item hover_list" 
+                                                            style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+                                                            <b>{{authority.name}}</b>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
                                 </div>
                             </div>
-						</div>
+                        </div>
 					</div>
 				</div>
 			</div>

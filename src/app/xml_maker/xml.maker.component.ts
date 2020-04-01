@@ -79,10 +79,6 @@ export class XMLMakerComponent implements OnInit {
         });
     }
 
-    public parseXMLFile(): any {
-
-    }
-
     public addFile(file: File): void {
         this.file = file;
     }
