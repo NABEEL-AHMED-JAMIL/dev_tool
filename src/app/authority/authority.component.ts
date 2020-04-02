@@ -3,15 +3,18 @@ import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@ang
 import { AuthorityService } from '@/_services';
 import { AuthorityDto } from '@/_models';
 
+
 @Component({ 
     templateUrl: 'authority.component.html',
 })
 export class AuthorityComponent implements OnInit {
 
+    public searchText: any;
     public authorityList: AuthorityDto[] = [];
     public authority: AuthorityDto;
     public authorityForm: FormGroup;
     public fileName:string;
+    public total:any = 0;
 
 
     constructor(private authorityService: AuthorityService, public fb: FormBuilder) {}
@@ -28,6 +31,7 @@ export class AuthorityComponent implements OnInit {
             filename: new FormControl(''),
             authorityDetail: this.fb.array([]),
         });
+        this.total = this.authortyDetailsForms.length;
     }
 
     public buildItem(): any {
@@ -49,7 +53,8 @@ export class AuthorityComponent implements OnInit {
     }
     
     public authortyDetailsFormsAddItem(): void {
-        this.authortyDetailsForms.push(this.buildItem());
+        this.authortyDetailsForms.insert(0, this.buildItem());
+        this.total = this.authortyDetailsForms.length;
     }
     
     public authortyDetailsFormsRemoveItem(index: number) {
@@ -63,6 +68,7 @@ export class AuthorityComponent implements OnInit {
                 });
         }
         this.authortyDetailsForms.removeAt(index);
+        this.total = this.authortyDetailsForms.length;
     }
 
     // looks good
@@ -95,6 +101,7 @@ export class AuthorityComponent implements OnInit {
                 name: this.authority.name, 
                 filename: this.authority.filename
             });
+            this.total = tempAuthDetail.length;
             this.authorityForm.setControl('authorityDetail', tempAuthDetail);
         }, error => {
             console.log('Error :- ' + JSON.stringify(error));
@@ -122,6 +129,7 @@ export class AuthorityComponent implements OnInit {
               }
               if(tarr[0] !== '' && tarr[0] !== 'Company Name') {
                 this.authortyDetailsForms.push(this.buildItemV2(tarr[0]));
+                this.total = this.authortyDetailsForms.length;
               }
             }
           }
@@ -138,11 +146,17 @@ export class AuthorityComponent implements OnInit {
         this.authorityService.saveAuthority(this.authority)
             .subscribe((response: any) => {
                 console.log(response.data);
+                this.total = 0;
                 this.getAllAuthority();
                 this.initForm();
             }, error => {
                 console.log('Error :- ' + JSON.stringify(error));
             });
+    }
+
+    onKey(event: any) {
+        this.searchText = event.target.value;
+        console.log(this.searchText);
     }
 
 }

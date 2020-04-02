@@ -4,3 +4,5 @@ export * from './user.service';
 export * from './xml.service';
 export * from './captcha.service';
 export * from './authority.service';
+export * from './websocket.service';
+export * from './filter.pipe';

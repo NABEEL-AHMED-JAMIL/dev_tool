@@ -13,50 +13,19 @@
                             <div class="row">
                                 <!-- <h3 style="text-align: center;">Response Message :- {{message}} </h3>
                                 <br> -->
-                                <h2 style="text-align: center;">Authority List</h2>
+                                <h2 style="text-align: center;">Authority Lists</h2>
                                 <br>
-                                <div class="col-sm-8">
-                                    <div class="row">
-                                        <div class="col-sm-11">
-                                            <form [formGroup]="authorityForm" (ngSubmit)="submint(authorityForm.value)" #uploadDocumentsForm="ngForm" ngNativeValidate>
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <label>Add Authority</label>
-                                                        <input type="text" class="form-control" formControlName="name" style="padding:4px 12px;width: 85%;" placeholder="Enter Authority">
-                                                        <input type="button" class="form-control" value="CSV" style="background: #f3565d;color:white;width: 70px;float: right;margin-top: -35px;" (click)="inputUpload.click()"> 
-                                                        <input type="file" #inputUpload  accept=".csv" (change)="bulkUpload($event)" style="overflow: hidden;opacity: 0;right: 0;top: 0;">
-                                                        <button type="button" (click)="authortyDetailsFormsAddItem()"
-                                                            class="btn btn-default"
-                                                            style="width:40px;height:40px;line-height: 1.33;border-radius: 25px;float: right;background: #f3565d;color: white;margin-right: 5px;"><b>+</b></button>
-                                                        <br><br>
-                                                    </div>
-                                                    <div class="panel-body" style="max-height: 275px;overflow-y: scroll; padding: 0px;">
-                                                        <ul class="list-group" style="margin-bottom: 0px;" formArrayName="authorityDetail">
-                                                            <li *ngFor="let authorty_detail of authorityForm.get('authorityDetail')['controls']; let i = index;" [formGroup]="authorty_detail"
-                                                                class="list-group-item"
-                                                                style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
-                                                                <input type="text" class="form-control" formControlName="name" placeholder="Enter Company Name">
-                                                                <button class="btn" style="float: right;background: #f3565d;color:white;margin-top: -34px;width: 45px;" (click)="authortyDetailsFormsRemoveItem(i)">X</button>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <input type="submit" class="form-control" value="Save" style="margin-top:24px;background: #f3565d;color:white;width: 70px;float: right;margin-right: 10px;" [disabled]="authorityForm?.invalid"> 
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                                 <!-- this is oky no more need to change -->
                                 <div class="col-sm-4" *ngIf="authorityList">
                                     <div class="panel-group" id="accordion">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Assign List</a>
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1"><b>Assign List</b></a>
                                                 </h4>
                                             </div>
                                             <div id="collapse1" class="panel-collapse collapse in">
-                                                <div class="panel-body" style="max-height: 250px;overflow-y: scroll; padding: 0px;">
+                                                <div class="panel-body" style="max-height: 418px;overflow-y: scroll; padding: 0px;">
                                                     <ul class="list-group" style="margin-bottom: 0px;">
                                                         <li *ngFor="let authority of authorityList"
                                                             (click)="getAuthorityDetailByAuthorityId(authority.id)"  
@@ -69,6 +38,45 @@
                                             </div>
                                         </div>
                                     </div> 
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <form [formGroup]="authorityForm" (ngSubmit)="submint(authorityForm.value)" 
+                                                #uploadDocumentsForm="ngForm" ngNativeValidate>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" style="height: 165px;">
+                                                        <div class="col-sm-9">
+                                                            <label>Add Authority</label>
+                                                            <input type="text" class="form-control" formControlName="name" style="padding:4px 12px;" placeholder="Enter Authority" />
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="button" class="form-control" value="Upload" style="background: #f3565d;color:white;width: 90px; margin-top: 24px;" (click)="inputUpload.click()" />
+                                                            <input type="file" #inputUpload  accept=".csv" (change)="bulkUpload($event)" style="overflow: hidden;opacity: 0;right: 0;top: 0;" />
+                                                            <button type="button" (click)="authortyDetailsFormsAddItem()" class="btn btn-default" 
+                                                                style="line-height: 1.33;float: right;background: #f3565d;color: white;margin-right: 5px;margin-top: -56px;width: 58px;height: 35px;"><b>+</b></button>
+                                                        </div>
+                                                        <!--  -->
+                                                        <label style="margin-left: 17px;">Search Company Name</label><br>
+                                                        <input placeholder="Search Company Name" class="form-control" style="width: 71%;display: inline;margin-left: 15px;" (keyup)="onKey($event)"  >
+                                                        <b style="margin-right: 40px;float: right; margin-top: 10px;">Total : {{total}}</b>
+                                                        <br>
+                                                    </div>
+                                                    <div class="panel-body" style="max-height: 275px;overflow-y: scroll; padding: 0px;">
+                                                        <ul class="list-group" style="margin-bottom: 0px;" formArrayName="authorityDetail">
+                                                            <li *ngFor="let authorty_detail of authorityForm.get('authorityDetail')['controls'] | filter:searchText; let i = index;" [formGroup]="authorty_detail"
+                                                                class="list-group-item"
+                                                                style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+                                                                <input type="text" class="form-control" formControlName="name" placeholder="Enter Company Name">
+                                                                <button class="btn" style="float: right;background: #f3565d;color:white;margin-top: -34px;width: 45px;" (click)="authortyDetailsFormsRemoveItem(i)">X</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <input type="submit" class="form-control" value="Save" style="margin-top:24px;background: #f3565d;color:white;width: 70px;float: right;margin-right: 10px;" [disabled]="authorityForm?.invalid"> 
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
