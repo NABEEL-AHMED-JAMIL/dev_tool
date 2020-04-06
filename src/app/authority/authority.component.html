@@ -64,7 +64,7 @@
                                                     </div>
                                                     <div class="panel-body" style="max-height: 275px;overflow-y: scroll; padding: 0px;">
                                                         <ul class="list-group" style="margin-bottom: 0px;" formArrayName="authorityDetail">
-                                                            <li *ngFor="let authorty_detail of authorityForm.get('authorityDetail')['controls'] | filter:searchText; let i = index;" [formGroup]="authorty_detail"
+                                                            <li *ngFor="let authorty_detail of authorityForm.get('authorityDetail')['controls'] | search:searchText; let i = index;" [formGroup]="authorty_detail"
                                                                 class="list-group-item"
                                                                 style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
                                                                 <input type="text" class="form-control" formControlName="name" placeholder="Enter Company Name">
