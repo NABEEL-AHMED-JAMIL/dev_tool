@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { XMLMakerService, WebsocketService } from '@/_services';
+import { XMLMakerService } from '@/_services';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { saveAs } from 'file-saver';
 import { XMLInfo } from '@/_models/xml';
@@ -19,21 +19,11 @@ export class XMLMakerComponent implements OnInit {
     public xmlInfo: XMLInfo;
     public file: File;
 
-    constructor(private xmlService: XMLMakerService, private wsService: WebsocketService, 
-        public fb: FormBuilder) {
-            this.saveSocketClientInfo = <Subject<any>> wsService
-            .connect(this.log_file).pipe((response: any): any => {
-                return response;
-            });
+    constructor(private xmlService: XMLMakerService, public fb: FormBuilder) {
+        
     }
 
     ngOnInit() {
-        this.sendMsg(this.token);
-        this.saveSocketClientInfo
-            .subscribe(msg => {
-                console.log(msg);
-        });
-
         this.xmlForm = this.fb.group({
             url: new FormControl('', Validators.required),
             tags: this.fb.array([ this.buildItem(), this.buildItem(), this.buildItem()]),
@@ -47,11 +37,6 @@ export class XMLMakerComponent implements OnInit {
         this.fileForm = this.fb.group( {
             file: new FormControl(null, Validators.required),
         });
-    }
-
-    // save clent into
-    public sendMsg(msg) {
-        this.saveSocketClientInfo.next(msg);
     }
 
     public buildItem(): any {
