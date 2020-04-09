@@ -13,6 +13,7 @@ export class AuthorityComponent implements OnInit {
     public authorityList: AuthorityDto[] = [];
     public authority: AuthorityDto;
     public authorityForm: FormGroup;
+    public authorityNameForm: FormGroup;
     public fileName:string;
     public total:any = 0;
 
@@ -21,6 +22,7 @@ export class AuthorityComponent implements OnInit {
 
     ngOnInit() {
         this.getAllAuthority();
+        this.initFormV1();
         this.initForm();
     }
 
@@ -29,9 +31,15 @@ export class AuthorityComponent implements OnInit {
             id: new FormControl(),
             name: new FormControl('', Validators.required),
             filename: new FormControl(''),
-            authorityDetail: this.fb.array([]),
+            authorityDetail: this.fb.array([], Validators.required),
         });
         this.total = this.authortyDetailsForms.length;
+    }
+
+    public initFormV1() {
+        this.authorityNameForm = this.fb.group({
+            name: new FormControl('', Validators.required),
+        });
     }
 
     public buildItem(): any {
@@ -134,6 +142,18 @@ export class AuthorityComponent implements OnInit {
             }
           }
         }
+    }
+
+    public submintV1(authorityNameForm: any) {
+        this.authority = authorityNameForm;
+        this.authorityService.saveAuthority(this.authority)
+        .subscribe((response: any) => {
+            console.log(response.data);
+            this.getAllAuthority();
+            this.initFormV1();
+        }, error => {
+            console.log('Error :- ' + JSON.stringify(error));
+        });
     }
 
     // looks good
