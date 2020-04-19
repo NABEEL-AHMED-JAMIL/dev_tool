@@ -5,14 +5,23 @@
 			<div class="tabbable-panel">
 				<div class="tabbable-line">
 					<ul class="nav nav-tabs ">
-                        <li class="active"><a href="#tab_default_1" data-toggle="tab"><b>Compare Image</b></a></li>
-						<li><a href="#tab_default_2" data-toggle="tab"><b>Image Captcha</b></a></li>
-                        <li><a href="#tab_default_3" data-toggle="tab"><b>Voice Captcha</b></a></li>
+						<li class="active">
+                            <a href="#tab_default_2" data-toggle="tab">
+                                <b>Image Captcha</b>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#tab_default_3" data-toggle="tab">
+                                <b>Voice Captcha</b>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#tab_default_1" data-toggle="tab">
+                                <b>Compare Image</b>
+                            </a>
+                        </li>
 					</ul>
                     <div class="tab-content" style="padding: 0px;">
-                        <div class="tab-pane panel-body row" id="tab_default_1">
-                            Pakistan Zindabd
-						</div>
 						<div class="tab-pane active panel-body row" id="tab_default_2">
                             <div class="col-sm-9" style="border-right: 1px solid #eee;">
                                 <form [formGroup]="imageCaptchaForm" (ngSubmit)="processImg()">
@@ -86,6 +95,9 @@
                                 <p *ngIf="decode_voice_message">{{decode_voice_message}}</p>
                             </div>
                         </div>
+                        <div class="tab-pane panel-body row" id="tab_default_1">
+                            Pakistan Zindabd
+						</div>
 					</div>
 				</div>
 			</div>

@@ -6,3 +6,4 @@ export * from './captcha.service';
 export * from './authority.service';
 export * from './websocket.service';
 export * from './home.service';
+export * from './form.parser.services';

@@ -13,6 +13,7 @@ import { XMLMakerComponent } from './xml_maker';
 import { AuthorityComponent } from './authority';
 import { CaptchaComponent } from './captcha';
 import { SegmentComponent } from './segment';
+import { FormParserComponent } from './form_parser';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { AlertComponent } from './_components';
@@ -33,6 +34,7 @@ import { WebsocketService } from './_services';
         AuthorityComponent,
         CaptchaComponent,
         SegmentComponent,
+        FormParserComponent,
         LoginComponent,
         RegisterComponent,
         AlertComponent,

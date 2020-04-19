@@ -1,0 +1,16 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+@Injectable({ providedIn: 'root' })
+export class FormParserService {
+
+    public authToken: any = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSIsImtpZCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSJ9.eyJhdWQiOiJodHRwczovL2dyYXBoLndpbmRvd3MubmV0LyIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2ZhYjYyYTVhLTQ1NDItNDRmZC05ODZmLTIxZjVmYTM3MjQzZS8iLCJpYXQiOjE1ODcxNDk5MjcsIm5iZiI6MTU4NzE0OTkyNywiZXhwIjoxNTg3MTUzODI3LCJhY3IiOiIxIiwiYWlvIjoiQVZRQXEvOFBBQUFBa1QvZzNIUjRuR1FLamFNVmpXeGpDUUlyRU9zbUNVZ1BYTE5PTU9yZm9YVG5zY055V2ZOVW1GYUJwWXZINUhpWC9Vbm5jUVRKSUNpT1YrOUhUZG80NDBFWnlQbWhXeGVoQ296elJRWHRJblU9IiwiYW1yIjpbInB3ZCIsIm1mYSJdLCJhcHBpZCI6ImY4N2VlOWI0LWQ4OTItNDMxYi1iZGI3LTZhZGQ3NzcxODFiZSIsImFwcGlkYWNyIjoiMSIsImZhbWlseV9uYW1lIjoiQWhtZWQiLCJnaXZlbl9uYW1lIjoiTmFiZWVsIiwiaXBhZGRyIjoiMTAzLjI1NS41LjEwOSIsIm5hbWUiOiJOYWJlZWwgQWhtZWQiLCJvaWQiOiI2NDNlMDNiOS00NjkxLTRlNzgtOWNjNC0wMGY2YmU1OWQ5M2MiLCJwdWlkIjoiMTAwMzIwMDA0Q0Q5QkVBRSIsInNjcCI6IkRpcmVjdG9yeS5BY2Nlc3NBc1VzZXIuQWxsIFVzZXIuUmVhZCBVc2VyLlJlYWRCYXNpYy5BbGwiLCJzdWIiOiJ2Q0pIYmhLQVhZZGttTHk1a01GVHFEc1JHOXdMRUZRdGJzUk1xZF9VNEkwIiwidGVuYW50X3JlZ2lvbl9zY29wZSI6Ik5BIiwidGlkIjoiZmFiNjJhNWEtNDU0Mi00NGZkLTk4NmYtMjFmNWZhMzcyNDNlIiwidW5pcXVlX25hbWUiOiJuYWhtZWRAbWFjcm9zb2Z0aW5jLmNvbSIsInVwbiI6Im5haG1lZEBtYWNyb3NvZnRpbmMuY29tIiwidXRpIjoiNVdBR3g2dkNna2l5ZXB2cUUwbGZBQSIsInZlciI6IjEuMCJ9.C6K-Ye_Y9S98NboedspiVZl69D0O13eIQEFzd8FHzWTrOVCeF8jq-7-NrI_ziwG-4oz9nEC6rSs7rgKsIwWTqWxBYzpTupP6exwC8CRpNnMY8-Ng5uXQmV0f9h4j4LgyBvfH-sABmAWctM2H43E8UqB_aj5_sYFah3-VXn4YFQu8MhHT7pyJgBdu79krRVtkVtQLQce9vlkwbJ8-B-WEDrnIAZuhSEIvdWZG-hRV49R8lN1xNrDEkvs3JqHnDMeWo26CPsS7GIsYmIeqBTjdxvxoQNRg1I-IJsHKSboYXKCdxNfIBpkO3hjDBl_z_P1fU3fRmwB86pjVT-LjsVdgYQ';
+
+    constructor(private http: HttpClient) { }
+
+    formParser(object: any) {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append('Authorization', this.authToken);    
+        return this.http.post('http://localhost:9091/api/scraper/scrap/formParser', object, { headers: headers });
+    }
+}
