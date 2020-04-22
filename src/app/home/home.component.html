@@ -5,14 +5,41 @@
 				<div class="tabbable-line">
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a href="#tab_default_1" data-toggle="tab"><b>File Detail</b></a>
+							<a href="#tab_default_1" data-toggle="tab">
+								<b>Downalod File</b>
+							</a>
 						</li>
 						<li>
-							<a href="#tab_default_2" data-toggle="tab"><b>Downalod File</b></a>
+							<a href="#tab_default_2" data-toggle="tab">
+								<b>File Detail</b>
+							</a>							
 						</li>
 					</ul>
 					<div class="tab-content">
-						<div class="tab-pane active panel-body" id="tab_default_1">
+						<div class="tab-pane active panel-body row" id="tab_default_1">
+							<div class="col-sm-4">
+								<form [formGroup]="fileIdForm" (ngSubmit)="submit(fileIdForm.value)"
+									#uploadDocumentsForm="ngForm" ngNativeValidate>
+									<div class="form-group">
+										<!-- <label for="ids">Ids For Files Download</label> -->
+										<textarea class="form-control" formControlName="ids"
+											rows="16" id="ids" placeholder="Enter Ids by comma sperate">
+										</textarea>
+										<br>
+										<input type="submit" class="form-control"
+											value="Download" [disabled]="fileIdForm?.invalid">
+									</div>
+								</form>
+							</div>
+							<div class="col-sm-8 well" style="height: 400px;overflow-y: scroll;">
+								<h4 style="text-align: center;">Live Logs</h4>
+								<hr style="border-top: 3px solid #f3565d;">
+								<div *ngFor="let message of messageList.reverse();">
+									<span>{{message}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane panel-body" id="tab_default_2">
 							<div class="row">
 								<div class="col-sm-12" style="height: 390px;overflow-y: scroll;">
 									<table class="table table-hover">
@@ -132,26 +159,6 @@
 									</table>
 								</div>
 							</div>							
-						</div>
-						<div class="tab-pane panel-body row" id="tab_default_2">
-							<div class="col-sm-8">
-								<form [formGroup]="fileIdForm" (ngSubmit)="submit(fileIdForm.value)"
-									#uploadDocumentsForm="ngForm" ngNativeValidate>
-									<div class="form-group">
-										<label for="ids">Ids For Files Download</label>
-										<textarea class="form-control" formControlName="ids" rows="15" id="ids"></textarea>
-										<br>
-										<input type="submit" class="form-control" value="Download" [disabled]="fileIdForm?.invalid">
-									</div>
-								</form>
-							</div>
-							<div class="col-sm-4 well" style="height: 390px;overflow-y: scroll;">
-								<h4 style="text-align: center;">Live Logs</h4>
-								<hr style="border-top: 3px solid #f3565d;">
-								<div *ngFor="let message of messageList.reverse();">
-									<span>{{message}}</span>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>

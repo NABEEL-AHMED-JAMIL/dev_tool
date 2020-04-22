@@ -28,12 +28,17 @@ export class FormParserComponent implements OnInit {
             url: new FormControl('', Validators.required),
             tag: new FormControl('', Validators.required)
         });
+        this.formParserInit();
+    }
+
+    formParserInit() {
         this.formParser = this.fb.group({
             parserTags: this.fb.array([]),
         });
     }
 
     public submintFormsParser(htmlParser: any): any {
+        this.formParserInit();
         this.htmlParserService.formParser(htmlParser)
         .pipe(take(1))
         .subscribe((response: any) => {
