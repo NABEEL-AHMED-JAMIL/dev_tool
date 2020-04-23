@@ -6,7 +6,7 @@ export class XMLMakerService {
 
     constructor(private http: HttpClient) { }
 
-    getXmlData(object: any) {
+    public getXmlData(object: any) {
         return this.http.post('http://localhost:9098/api/converter/conversion/xmlCreateChecker', object);
     }
 }

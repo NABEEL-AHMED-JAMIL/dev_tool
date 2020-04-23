@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpHandler,
+    HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
@@ -9,7 +10,7 @@ let users = JSON.parse(localStorage.getItem('users')) || [];
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const { url, method, headers, body } = request;
         // wrap in delayed observable to simulate server api call
         return of(null)

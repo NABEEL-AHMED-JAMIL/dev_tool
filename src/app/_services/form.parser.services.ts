@@ -8,7 +8,7 @@ export class FormParserService {
 
     constructor(private http: HttpClient) { }
 
-    formParser(object: any) {
+    public formParser(object: any) {
         let headers: HttpHeaders = new HttpHeaders();
         headers = headers.append('Authorization', this.authToken);    
         return this.http.post('https://raad-dev-api.macrosoftinc.com/api/scraper/scrap/formParser', object, { headers: headers });
