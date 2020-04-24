@@ -10,6 +10,7 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 import { XMLMakerComponent } from './xml_maker';
+import { AuthorityComponent } from './authority';
 import { CaptchaComponent } from './captcha';
 import { SegmentComponent } from './segment';
 import { FormParserComponent } from './form_parser';
@@ -30,6 +31,7 @@ import { WebsocketService } from './_services';
         AppComponent,
         HomeComponent,
         XMLMakerComponent,
+        AuthorityComponent,
         CaptchaComponent,
         SegmentComponent,
         FormParserComponent,
@@ -42,8 +44,8 @@ import { WebsocketService } from './_services';
     ],
     providers: [
         WebsocketService,
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         // provider used to create fake backend
         //fakeBackendProvider
     ],

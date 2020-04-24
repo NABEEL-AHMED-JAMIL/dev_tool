@@ -1,11 +1,8 @@
 ﻿export class User {
-    memberId: number;
+    id: number;
     username: string;
     password: string;
     firstName: string;
     lastName: string;
-    jwtToken: string;
-    expiresTime: any;
-    topicId: any;
-    clientPath: any;
+    token: string;
 }

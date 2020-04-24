@@ -12,7 +12,7 @@ export class WebsocketService {
   constructor() { }
 
   public connect(path:any): Rx.Subject<MessageEvent> {
-    this.socket = io(`${config.socketUrl}`);
+    this.socket = io('http://localhost:889');
     let observable = new Observable(observer => {
         this.socket.on(path, (data) => {
           observer.next(data);

@@ -8,18 +8,14 @@ import './_content/app.less';
 
 @Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent {
-
-    public currentUser: User;
+    currentUser: User;
 
     constructor(private router: Router,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser.subscribe(x => {
-            this.currentUser = x;
-            console.log(this.currentUser);
-        });
+        this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
 
-    public logout() {
+    logout() {
         this.authenticationService.logout();
         this.router.navigate(['/login']);
     }

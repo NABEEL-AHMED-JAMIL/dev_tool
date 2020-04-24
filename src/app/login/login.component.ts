@@ -7,11 +7,10 @@ import { AlertService, AuthenticationService } from '@/_services';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
-    
-    public loginForm: FormGroup;
-    public loading = false;
-    public submitted = false;
-    public returnUrl: string;
+    loginForm: FormGroup;
+    loading = false;
+    submitted = false;
+    returnUrl: string;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -31,6 +30,7 @@ export class LoginComponent implements OnInit {
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
+
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
@@ -38,26 +38,27 @@ export class LoginComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() { return this.loginForm.controls; }
 
-    public onSubmit() {
+    onSubmit() {
         this.submitted = true;
+
         // reset alerts on submit
         this.alertService.clear();
+
         // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
         }
+
         this.loading = true;
-        this.authenticationService
-            .login(this.f.username.value, this.f.password.value)
+        this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
             .subscribe(
-                (data) => {
+                data => {
                     this.router.navigate([this.returnUrl]);
                 },
-                (error) => {
+                error => {
                     this.alertService.error(error);
                     this.loading = false;
-                    this.submitted = true;
                 });
     }
 }

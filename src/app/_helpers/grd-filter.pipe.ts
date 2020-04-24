@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe( { name: 'grdFilter' })
 export class GrdFilterPipe implements PipeTransform {
 
-  public transform(items: any, filter: any, defaultFilter: boolean): any {
+  transform(items: any, filter: any, defaultFilter: boolean): any {
 
     if (!filter) { return items; }
     if (!Array.isArray(items)) { return items; }

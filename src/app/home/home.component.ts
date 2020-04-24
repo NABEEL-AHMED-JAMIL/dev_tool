@@ -9,6 +9,8 @@ import { saveAs } from 'file-saver';
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit {
 
+    public log_file : any = 'downlaod_file';
+    public token: any = 'a5f97b77-2279-46f7-a50b-85837709fffd';
     public saveSocketClientInfo: Subject<any>;
     public currentUser: User;
     public users = [];
@@ -23,7 +25,7 @@ export class HomeComponent implements OnInit {
         public fb: FormBuilder) {
             this.currentUser = this.authenticationService.currentUserValue;
             this.saveSocketClientInfo = <Subject<any>> wsService
-                .connect(this.currentUser.clientPath).pipe((response: any): any => {
+                .connect(this.log_file).pipe((response: any): any => {
                     return response;
             });
     }
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit {
         this.fileIdForm = this.fb.group({
             ids: new FormControl('', Validators.required),
         });
-        this.sendMsg(this.currentUser.topicId);
+        this.sendMsg(this.token);
         this.saveSocketClientInfo
             .subscribe(msg => {
                 if(msg.status === 400) {
@@ -50,7 +52,7 @@ export class HomeComponent implements OnInit {
         let splitted: any = fileIdForm.ids.split(",").map(x=>+x); 
         let fileDetail = {
             "ids" : splitted,
-            "toke" : this.currentUser.topicId
+            "toke" : this.token
         }
         this.homeService.downloadFile(fileDetail)
         .subscribe((response: any) => {
@@ -58,6 +60,18 @@ export class HomeComponent implements OnInit {
         }, error => {
             console.log('Error :- ' + JSON.stringify(error));
         });
+    }
+
+    public deleteUser(id: number) {
+        this.userService.delete(id)
+            .pipe(first())
+            .subscribe(() => this.loadAllUsers());
+    }
+
+    private loadAllUsers() {
+        this.userService.getAll()
+            .pipe(first())
+            .subscribe(users => this.users = users);
     }
 
     // save clent into
