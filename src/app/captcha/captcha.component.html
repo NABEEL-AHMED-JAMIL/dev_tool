@@ -1,11 +1,11 @@
 ﻿<div class="container" style="width: 95%;">
     <div class="row">
 		<div class="col-sm-12">
-            <h2 style="text-align: center;">Response Message :- {{message}} </h2>
+            <!-- <h2 style="text-align: center;">Response Message :- {{message}} </h2> -->
 			<div class="tabbable-panel">
 				<div class="tabbable-line">
 					<ul class="nav nav-tabs ">
-						<li class="active">
+						<!-- <li class="active">
                             <a href="#tab_default_2" data-toggle="tab">
                                 <b>Image Captcha</b>
                             </a>
@@ -14,15 +14,15 @@
                             <a href="#tab_default_3" data-toggle="tab">
                                 <b>Voice Captcha</b>
                             </a>
-                        </li>
-                        <li>
+                        </li> -->
+                        <li class="active">
                             <a href="#tab_default_1" data-toggle="tab">
                                 <b>Compare Image</b>
                             </a>
                         </li>
 					</ul>
                     <div class="tab-content" style="padding: 0px;">
-						<div class="tab-pane active panel-body row" id="tab_default_2">
+						<!-- <div class="tab-pane active panel-body row" id="tab_default_2">
                             <div class="col-sm-9" style="border-right: 1px solid #eee;">
                                 <form [formGroup]="imageCaptchaForm" (ngSubmit)="processImg()">
                                     <div class="row">
@@ -94,10 +94,105 @@
                                 <hr>
                                 <p *ngIf="decode_voice_message">{{decode_voice_message}}</p>
                             </div>
+                        </div> -->
+                        <div class="tab-pane panel-body active row" id="tab_default_1">
+                            <form [formGroup]="imageCompare" (ngSubmit)="compareImg()">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label>Image 1</label>
+                                        <input type="file" class="form-control" 
+                                            formControlName="oldImage" style="padding:4px 12px;" 
+                                            (change)="addFileV1($event.target.files[0], 1)" 
+                                            placeholder="Enter Image" accept="image/*">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label>Image 2</label>
+                                        <input type="file" class="form-control"
+                                            formControlName="newImage" style="padding:4px 12px;"
+                                            (change)="addFileV1($event.target.files[0], 2)"
+                                            placeholder="Enter Image" accept="image/*">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>Threshold</label>
+                                        <input type="number" class="form-control" formControlName="threshold">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>RLW</label>
+                                        <input type="number" class="form-control" formControlName="rectangleLineWidth">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>POD Rectangles</label>
+                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityDifferenceRectangles">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>POE Rectangles</label>
+                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityExcludedRectangles">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <label>MR Count</label>
+                                        <input type="number" class="form-control" formControlName="maximalRectangleCount">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>MR Size</label>
+                                        <input type="number" class="form-control" formControlName="minimalRectangleSize">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>PT Level</label>
+                                        <input type="number" class="form-control" formControlName="pixelToleranceLevel">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>APD Pixels</label>
+                                        <input type="number" class="form-control" formControlName="allowingPercentOfDifferentPixels">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>FDR</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="fillDifferenceRectangles">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>FER</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="fillExcludedRectangles">
+                                    </div>
+                                    <!-- <div class="col-sm-1">
+                                        <label>DER</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="drawExcludedRectangles">
+                                    </div>                                  -->
+                                    <div class="col-sm-5">
+                                        <input type="submit" class="form-control"
+                                            value="Process Image" [disabled]="imageCompare?.invalid"
+                                            style="width:90%;margin-top:23px;">
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div *ngIf="image1">
+                                        <p><b>Real Image</b></p>
+                                        <img [src]="image1" height="300px" width="400px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div *ngIf="image2">
+                                        <p><b>Compare Image</b></p>
+                                        <img [src]="image2" height="300px" width="400px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div *ngIf="resultImage">
+                                        <p>
+                                            <b>
+                                                Result Status = {{this.extData.Status}}
+                                            </b>
+                                        </p>
+                                        <img [src]="resultImage" height="300px" width="400px">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tab-pane panel-body row" id="tab_default_1">
-                            Pakistan Zindabd
-						</div>
 					</div>
 				</div>
 			</div>

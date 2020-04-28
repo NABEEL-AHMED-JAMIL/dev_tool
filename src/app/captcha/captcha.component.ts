@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CaptchaService } from '@/_services';
+import { take } from 'rxjs/operators';
 
 export const PROCESS_TYPE = [
     // "IPL_BORDER_CONSTANT","IPL_BORDER_REPLICATE","IPL_BORDER_REFLECT","IPL_BORDER_WRAP",
@@ -106,7 +107,9 @@ export const PROCESS_TYPE = [
 ];    
 
 
-@Component({ templateUrl: 'captcha.component.html' })
+@Component({
+    templateUrl: 'captcha.component.html'
+})
 export class CaptchaComponent implements OnInit {
 
     public message: string = "--";
@@ -115,8 +118,17 @@ export class CaptchaComponent implements OnInit {
     public decode_voice_message: string;
     public imageCaptchaForm: FormGroup;
     public voiceCaptchaForm: FormGroup;
+    public imageCompare: FormGroup;
     public file: File;
     public imgURL: any;
+
+    public image1: any;
+    public image1File: File;
+    public image2: any;
+    public image2File: File;
+    public resultImage: any;
+    public extData: any;
+    
     public imagePath;
     public process_type: any = PROCESS_TYPE;
     public reqeustSubmitFrom: any;
@@ -135,6 +147,22 @@ export class CaptchaComponent implements OnInit {
         this.voiceCaptchaForm = this.fb.group( {
             file: new FormControl(null, Validators.required),
         });
+
+        this.imageCompare = this.fb.group( {
+            oldImage: new FormControl(null, Validators.required),
+            newImage: new FormControl(null, Validators.required),
+            threshold: new FormControl(10,Validators.required),
+            rectangleLineWidth: new FormControl(5,Validators.required),
+            fillDifferenceRectangles: new FormControl(true,Validators.required),
+            percentOpacityDifferenceRectangles: new FormControl(30.0,Validators.required),
+            fillExcludedRectangles: new FormControl(true,Validators.required),
+            percentOpacityExcludedRectangles: new FormControl(30.0,Validators.required),
+            maximalRectangleCount: new FormControl(10,Validators.required),
+            minimalRectangleSize: new FormControl(100,Validators.required),
+            pixelToleranceLevel: new FormControl(0.2,Validators.required),
+            drawExcludedRectangles: new FormControl(false,Validators.required),
+            allowingPercentOfDifferentPixels: new FormControl(0.0,Validators.required),
+        });
     }
 
     public addFile(file: File): void {
@@ -151,6 +179,29 @@ export class CaptchaComponent implements OnInit {
         }
     }
 
+    public addFileV1(file: File, imgNumber:any): void {
+        var mimeType = file.type;
+        if (mimeType.match(/image\/*/) == null) {
+            this.message = "Only images are supported.";
+            return;
+        }
+        var reader = new FileReader();
+        if(imgNumber === 1) {
+            this.image1File = file;
+            reader.readAsDataURL(file); 
+        } else if(imgNumber === 2) {
+            this.image2File = file;
+            reader.readAsDataURL(file); 
+        }        
+        reader.onload = (_event) => { 
+            if(imgNumber === 1) {
+                this.image1 = reader.result; 
+            } else if(imgNumber === 2) {
+                this.image2 = reader.result; 
+            }
+        }
+    }
+
     public processImg(): void {
         console.log(this.imageCaptchaForm.value);
         this.reqeustSubmitFrom = new FormData();
@@ -161,16 +212,41 @@ export class CaptchaComponent implements OnInit {
         this.reqeustSubmitFrom.append('background', this.imageCaptchaForm.value.background);
         this.captchaService.getProcessImage(this.reqeustSubmitFrom)
         .subscribe((response: any) => {
-          this.message = response.message;
-          this.decode_text_message = response.text;
-          this.decode_image = 'data:image/png;base64,' + response.data;
+            this.message = response.message;
+            this.decode_text_message = response.text;
+            this.decode_image = 'data:image/png;base64,' + response.data;
         }, error => {
-          this.message = error.error.message;
-          console.log('Error :- ' + JSON.stringify(error));
+            this.message = error.error.message;
+            console.log('Error :- ' + JSON.stringify(error));
         });
     }
 
-    public processVoice(): void {
+    public compareImg(): void {
+        this.reqeustSubmitFrom = new FormData();
+        this.reqeustSubmitFrom.append('oldImage',  this.image1File, this.image1File.name);
+        this.reqeustSubmitFrom.append('newImage', this.image2File, this.image2File.name);
+        this.reqeustSubmitFrom.append('threshold', this.imageCompare.value.threshold);
+        this.reqeustSubmitFrom.append('rectangleLineWidth', this.imageCompare.value.rectangleLineWidth);
+        this.reqeustSubmitFrom.append('fillDifferenceRectangles', this.imageCompare.value.fillDifferenceRectangles);
+        this.reqeustSubmitFrom.append('percentOpacityDifferenceRectangles', this.imageCompare.value.percentOpacityDifferenceRectangles);
+        this.reqeustSubmitFrom.append('fillExcludedRectangles', this.imageCompare.value.fillExcludedRectangles);
+        this.reqeustSubmitFrom.append('percentOpacityExcludedRectangles', this.imageCompare.value.percentOpacityExcludedRectangles);
+        this.reqeustSubmitFrom.append('maximalRectangleCount', this.imageCompare.value.maximalRectangleCount);
+        this.reqeustSubmitFrom.append('minimalRectangleSize', this.imageCompare.value.minimalRectangleSize);
+        this.reqeustSubmitFrom.append('pixelToleranceLevel', this.imageCompare.value.pixelToleranceLevel);
+        this.reqeustSubmitFrom.append('drawExcludedRectangles', this.imageCompare.value.drawExcludedRectangles);
+        this.reqeustSubmitFrom.append('allowingPercentOfDifferentPixels', this.imageCompare.value.allowingPercentOfDifferentPixels);
 
+        this.captchaService.imageReaderV2(this.reqeustSubmitFrom)
+            .pipe(take(1))
+            .subscribe(
+                (response: any) => {
+                    this.resultImage = 'data:image/png;base64,' + response.data;
+                    this.extData = response.ext;
+                }, (error) => {
+                    this.message = error.error.message;
+                    console.log('Error :- ' + JSON.stringify(error));
+            });
     }
+
 }

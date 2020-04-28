@@ -9,4 +9,16 @@ export class CaptchaService {
     getProcessImage(object: any) {
         return this.http.post('http://localhost:9098/api/converter/captcha/image-text-reader', object);
     }
+
+    imageReaderV1(object: any) {
+        return this.http.post('http://localhost:9096/api/img-process/imageReaderV1', object);
+    }
+
+    imageReaderV2(object: any) {
+        return this.http.post('http://localhost:9096/api/img-process/imageReaderV2', object);
+    }
+
+    imageReaderV3(object: any) {
+        return this.http.post('http://localhost:9096/api/img-process/imageReaderV3', object);
+    }
 }
