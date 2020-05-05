@@ -99,14 +99,14 @@
                             <form [formGroup]="imageCompare" (ngSubmit)="compareImg()">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <label>Image 1</label>
+                                        <label>Compare Image</label>
                                         <input type="file" class="form-control" 
                                             formControlName="oldImage" style="padding:4px 12px;" 
                                             (change)="addFileV1($event.target.files[0], 1)" 
                                             placeholder="Enter Image" accept="image/*">
                                     </div>
                                     <div class="col-sm-3">
-                                        <label>Image 2</label>
+                                        <label>Real Image</label>
                                         <input type="file" class="form-control"
                                             formControlName="newImage" style="padding:4px 12px;"
                                             (change)="addFileV1($event.target.files[0], 2)"
@@ -174,13 +174,13 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div *ngIf="image1">
-                                        <p><b>Real Image</b></p>
+                                        <p><b>Compare Image</b></p>
                                         <img [src]="image1" height="300px" width="400px">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div *ngIf="image2">
-                                        <p><b>Compare Image</b></p>
+                                        <p><b>Real Image</b></p>
                                         <img [src]="image2" height="300px" width="400px">
                                     </div>
                                 </div>
