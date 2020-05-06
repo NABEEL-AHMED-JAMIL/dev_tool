@@ -112,7 +112,7 @@
                                             (change)="addFileV1($event.target.files[0], 2)"
                                             placeholder="Enter Image" accept="image/*">
                                     </div>
-                                    <!-- <div class="col-sm-1">
+                                    <div class="col-sm-1">
                                         <label>Threshold</label>
                                         <input type="number" class="form-control" formControlName="threshold">
                                     </div>
@@ -123,17 +123,14 @@
                                     <div class="col-sm-2">
                                         <label>POD Rectangles</label>
                                         <input type="number" step="any" class="form-control" formControlName="percentOpacityDifferenceRectangles">
-                                    </div> -->
+                                    </div>
                                     <div class="col-sm-2">
-                                        <input type="submit" class="form-control"
-                                        value="Process Image" [disabled]="imageCompare?.invalid"
-                                        style="width:90%;margin-top:23px;">
-                                        <!-- <label>POE Rectangles</label>
-                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityExcludedRectangles"> -->
+                                        <label>POE Rectangles</label>
+                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityExcludedRectangles">
                                     </div>
                                 </div>
                                 <br>
-                                <!-- <div class="row">
+                                <div class="row">
                                     <div class="col-sm-1">
                                         <label>MR Count</label>
                                         <input type="number" class="form-control" formControlName="maximalRectangleCount">
@@ -157,17 +154,17 @@
                                     <div class="col-sm-1">
                                         <label>FER</label><br>
                                         <input type="checkbox" class="form-check-input" formControlName="fillExcludedRectangles">
-                                    </div> -->
-                                    <!-- <div class="col-sm-1">
+                                    </div>
+                                    <div class="col-sm-1">
                                         <label>DER</label><br>
                                         <input type="checkbox" class="form-check-input" formControlName="drawExcludedRectangles">
-                                    </div>                                  -->
-                                    <!-- <div class="col-sm-5">
+                                    </div>                                 
+                                    <div class="col-sm-5">
                                         <input type="submit" class="form-control"
                                             value="Process Image" [disabled]="imageCompare?.invalid"
                                             style="width:90%;margin-top:23px;">
-                                    </div> -->
-                                <!-- </div> -->
+                                    </div>
+                                </div>
                             </form>
                             <hr>
                             <table *ngIf="extData" class="table table-bordered">
