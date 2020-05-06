@@ -159,7 +159,7 @@ export class CaptchaComponent implements OnInit {
             percentOpacityExcludedRectangles: new FormControl(20.0,Validators.required),
             maximalRectangleCount: new FormControl(0,Validators.required),
             minimalRectangleSize: new FormControl(0,Validators.required),
-            pixelToleranceLevel: new FormControl(0.1,Validators.required),
+            pixelToleranceLevel: new FormControl(0,Validators.required),
             drawExcludedRectangles: new FormControl(false,Validators.required),
             allowingPercentOfDifferentPixels: new FormControl(0.0,Validators.required),
         });
