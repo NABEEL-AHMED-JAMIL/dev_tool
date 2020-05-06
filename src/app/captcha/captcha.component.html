@@ -169,29 +169,42 @@
                                     </div> -->
                                 <!-- </div> -->
                             </form>
-                            <br>
                             <hr>
+                            <table *ngIf="extData" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Difference %</th>
+                                        <th>Total Rect</th>
+                                        <th>Rect Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{extData.status}}</td>
+                                        <td>{{extData.differencePercent}}</td>
+                                        <td>{{extData.total_rect}}</td>
+                                        <td>{{extData.rect_size}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div *ngIf="image1">
                                         <p><b>Compare Image</b></p>
-                                        <img [src]="image1" height="300px" width="400px">
+                                        <img [src]="image1" height="300px" width="380px">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div *ngIf="image2">
                                         <p><b>Real Image</b></p>
-                                        <img [src]="image2" height="300px" width="400px">
+                                        <img [src]="image2" height="300px" width="380px">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div *ngIf="resultImage">
-                                        <p *ngIf="extData">
-                                            <b>
-                                                Result Status = {{extData.Status}}
-                                            </b>
-                                        </p>
-                                        <img [src]="resultImage" height="300px" width="400px">
+                                        <p><b>Result Image</b></p>
+                                        <img [src]="resultImage" height="300px" width="380px">
                                     </div>
                                 </div>
                             </div>
