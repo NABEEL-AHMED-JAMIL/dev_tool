@@ -118,25 +118,48 @@ export class CaptchaComponent implements OnInit {
     public decode_voice_message: string;
     public imageCaptchaForm: FormGroup;
     public voiceCaptchaForm: FormGroup;
-    public imageCompare: FormGroup;
+    
+    public imageCompareV1: FormGroup;
+    public imageCompareV2: FormGroup;
+    public imageCompareV3: FormGroup;
+
     public file: File;
     public imgURL: any;
 
+    // V1
     public image1: any;
     public image1File: File;
     public image2: any;
     public image2File: File;
-    public resultImage: any;
+    // V2
+    public image11: any;
+    public image11File: File;
+    public image22: any;
+    public image22File: File;
+    // V3
+    public image111: any;
+    public image111File: File;
+    public image222: any;
+    public image222File: File;
+
+    public resultImageV1: any;
+    public resultImageV2: any;
+    public resultImageV3: any;
+
     public extData: any;
     
     public imagePath;
     public process_type: any = PROCESS_TYPE;
-    public reqeustSubmitFrom: any;
+
+    public reqeustSubmitFromV1: any;
+    public reqeustSubmitFromV2: any;
+    public reqeustSubmitFromV3: any;
 
     constructor(private captchaService: CaptchaService, public fb: FormBuilder) {}
 
     // default => 2,85,150
     ngOnInit() {
+
         this.imageCaptchaForm = this.fb.group( {
             file: new FormControl(null, Validators.required),
             process: new FormControl('CCL_GRANA', Validators.required),
@@ -144,11 +167,44 @@ export class CaptchaComponent implements OnInit {
             thresh: new FormControl(85, Validators.required),
             background: new FormControl(150, Validators.required),
         });
+
         this.voiceCaptchaForm = this.fb.group( {
             file: new FormControl(null, Validators.required),
         });
 
-        this.imageCompare = this.fb.group( {
+        this.imageCompareV1 = this.fb.group( {
+            oldImage: new FormControl(null, Validators.required),
+            newImage: new FormControl(null, Validators.required),
+            threshold: new FormControl(10,Validators.required),
+            rectangleLineWidth: new FormControl(5,Validators.required),
+            fillDifferenceRectangles: new FormControl(false,Validators.required),
+            percentOpacityDifferenceRectangles: new FormControl(20.0,Validators.required),
+            fillExcludedRectangles: new FormControl(false,Validators.required),
+            percentOpacityExcludedRectangles: new FormControl(20.0,Validators.required),
+            maximalRectangleCount: new FormControl(0,Validators.required),
+            minimalRectangleSize: new FormControl(0,Validators.required),
+            pixelToleranceLevel: new FormControl(0.1,Validators.required),
+            drawExcludedRectangles: new FormControl(false,Validators.required),
+            allowingPercentOfDifferentPixels: new FormControl(0.0,Validators.required),
+        });
+
+        this.imageCompareV2 = this.fb.group( {
+            oldImage: new FormControl(null, Validators.required),
+            newImage: new FormControl(null, Validators.required),
+            threshold: new FormControl(10,Validators.required),
+            rectangleLineWidth: new FormControl(5,Validators.required),
+            fillDifferenceRectangles: new FormControl(false,Validators.required),
+            percentOpacityDifferenceRectangles: new FormControl(20.0,Validators.required),
+            fillExcludedRectangles: new FormControl(false,Validators.required),
+            percentOpacityExcludedRectangles: new FormControl(20.0,Validators.required),
+            maximalRectangleCount: new FormControl(0,Validators.required),
+            minimalRectangleSize: new FormControl(0,Validators.required),
+            pixelToleranceLevel: new FormControl(0.1,Validators.required),
+            drawExcludedRectangles: new FormControl(false,Validators.required),
+            allowingPercentOfDifferentPixels: new FormControl(0.0,Validators.required),
+        });
+
+        this.imageCompareV3 = this.fb.group( {
             oldImage: new FormControl(null, Validators.required),
             newImage: new FormControl(null, Validators.required),
             threshold: new FormControl(10,Validators.required),
@@ -202,46 +258,92 @@ export class CaptchaComponent implements OnInit {
         }
     }
 
-    public processImg(): void {
-        console.log(this.imageCaptchaForm.value);
-        this.reqeustSubmitFrom = new FormData();
-        this.reqeustSubmitFrom.append('file',  this.file, this.file.name);
-        this.reqeustSubmitFrom.append('process', this.imageCaptchaForm.value.process);
-        this.reqeustSubmitFrom.append('size', this.imageCaptchaForm.value.size);
-        this.reqeustSubmitFrom.append('thresh', this.imageCaptchaForm.value.thresh);
-        this.reqeustSubmitFrom.append('background', this.imageCaptchaForm.value.background);
-        this.captchaService.getProcessImage(this.reqeustSubmitFrom)
-        .subscribe((response: any) => {
-            this.message = response.message;
-            this.decode_text_message = response.text;
-            this.decode_image = 'data:image/png;base64,' + response.data;
-        }, error => {
-            this.message = error.error.message;
-            console.log('Error :- ' + JSON.stringify(error));
-        });
+    public addFileV2(file: File, imgNumber:any): void {
+        var mimeType = file.type;
+        if (mimeType.match(/image\/*/) == null) {
+            this.message = "Only images are supported.";
+            return;
+        }
+        var reader = new FileReader();
+        if(imgNumber === 1) {
+            this.image11File = file;
+            reader.readAsDataURL(file); 
+        } else if(imgNumber === 2) {
+            this.image22File = file;
+            reader.readAsDataURL(file); 
+        }        
+        reader.onload = (_event) => { 
+            if(imgNumber === 1) {
+                this.image11 = reader.result; 
+            } else if(imgNumber === 2) {
+                this.image22 = reader.result; 
+            }
+        }
     }
 
-    public compareImg(): void {
-        this.reqeustSubmitFrom = new FormData();
-        this.reqeustSubmitFrom.append('oldImage',  this.image1File, this.image1File.name);
-        this.reqeustSubmitFrom.append('newImage', this.image2File, this.image2File.name);
-        this.reqeustSubmitFrom.append('threshold', this.imageCompare.value.threshold);
-        this.reqeustSubmitFrom.append('rectangleLineWidth', this.imageCompare.value.rectangleLineWidth);
-        this.reqeustSubmitFrom.append('fillDifferenceRectangles', this.imageCompare.value.fillDifferenceRectangles);
-        this.reqeustSubmitFrom.append('percentOpacityDifferenceRectangles', this.imageCompare.value.percentOpacityDifferenceRectangles);
-        this.reqeustSubmitFrom.append('fillExcludedRectangles', this.imageCompare.value.fillExcludedRectangles);
-        this.reqeustSubmitFrom.append('percentOpacityExcludedRectangles', this.imageCompare.value.percentOpacityExcludedRectangles);
-        this.reqeustSubmitFrom.append('maximalRectangleCount', this.imageCompare.value.maximalRectangleCount);
-        this.reqeustSubmitFrom.append('minimalRectangleSize', this.imageCompare.value.minimalRectangleSize);
-        this.reqeustSubmitFrom.append('pixelToleranceLevel', this.imageCompare.value.pixelToleranceLevel);
-        this.reqeustSubmitFrom.append('drawExcludedRectangles', this.imageCompare.value.drawExcludedRectangles);
-        this.reqeustSubmitFrom.append('allowingPercentOfDifferentPixels', this.imageCompare.value.allowingPercentOfDifferentPixels);
+    public addFileV3(file: File, imgNumber:any): void {
+        var mimeType = file.type;
+        if (mimeType.match(/image\/*/) == null) {
+            this.message = "Only images are supported.";
+            return;
+        }
+        var reader = new FileReader();
+        if(imgNumber === 1) {
+            this.image111File = file;
+            reader.readAsDataURL(file); 
+        } else if(imgNumber === 2) {
+            this.image222File = file;
+            reader.readAsDataURL(file); 
+        }        
+        reader.onload = (_event) => { 
+            if(imgNumber === 1) {
+                this.image111 = reader.result; 
+            } else if(imgNumber === 2) {
+                this.image222 = reader.result; 
+            }
+        }
+    }
 
-        this.captchaService.imageReaderV2(this.reqeustSubmitFrom)
+    // public processImg(): void {
+    //     console.log(this.imageCaptchaForm.value);
+    //     this.reqeustSubmitFrom = new FormData();
+    //     this.reqeustSubmitFrom.append('file',  this.file, this.file.name);
+    //     this.reqeustSubmitFrom.append('process', this.imageCaptchaForm.value.process);
+    //     this.reqeustSubmitFrom.append('size', this.imageCaptchaForm.value.size);
+    //     this.reqeustSubmitFrom.append('thresh', this.imageCaptchaForm.value.thresh);
+    //     this.reqeustSubmitFrom.append('background', this.imageCaptchaForm.value.background);
+    //     this.captchaService.getProcessImage(this.reqeustSubmitFrom)
+    //     .subscribe((response: any) => {
+    //         this.message = response.message;
+    //         this.decode_text_message = response.text;
+    //         this.decode_image = 'data:image/png;base64,' + response.data;
+    //     }, error => {
+    //         this.message = error.error.message;
+    //         console.log('Error :- ' + JSON.stringify(error));
+    //     });
+    // }
+
+    public compareImgV1(): void {
+        this.reqeustSubmitFromV1 = new FormData();
+        this.reqeustSubmitFromV1.append('oldImage',  this.image1File, this.image1File.name);
+        this.reqeustSubmitFromV1.append('newImage', this.image2File, this.image2File.name);
+        this.reqeustSubmitFromV1.append('threshold', this.imageCompareV1.value.threshold);
+        this.reqeustSubmitFromV1.append('rectangleLineWidth', this.imageCompareV1.value.rectangleLineWidth);
+        this.reqeustSubmitFromV1.append('fillDifferenceRectangles', this.imageCompareV1.value.fillDifferenceRectangles);
+        this.reqeustSubmitFromV1.append('percentOpacityDifferenceRectangles', this.imageCompareV1.value.percentOpacityDifferenceRectangles);
+        this.reqeustSubmitFromV1.append('fillExcludedRectangles', this.imageCompareV1.value.fillExcludedRectangles);
+        this.reqeustSubmitFromV1.append('percentOpacityExcludedRectangles', this.imageCompareV1.value.percentOpacityExcludedRectangles);
+        this.reqeustSubmitFromV1.append('maximalRectangleCount', this.imageCompareV1.value.maximalRectangleCount);
+        this.reqeustSubmitFromV1.append('minimalRectangleSize', this.imageCompareV1.value.minimalRectangleSize);
+        this.reqeustSubmitFromV1.append('pixelToleranceLevel', this.imageCompareV1.value.pixelToleranceLevel);
+        this.reqeustSubmitFromV1.append('drawExcludedRectangles', this.imageCompareV1.value.drawExcludedRectangles);
+        this.reqeustSubmitFromV1.append('allowingPercentOfDifferentPixels', this.imageCompareV1.value.allowingPercentOfDifferentPixels);
+
+        this.captchaService.imageReaderV2(this.reqeustSubmitFromV1)
             .pipe(take(1))
             .subscribe(
                 (response: any) => {
-                    this.resultImage = 'data:image/png;base64,' + response.data;
+                    this.resultImageV1 = 'data:image/png;base64,' + response.data;
                     this.extData = response.ext;
                 }, (error) => {
                     this.message = error.error.message;
@@ -249,4 +351,60 @@ export class CaptchaComponent implements OnInit {
             });
     }
 
+    public compareImgV2(): void {
+        this.reqeustSubmitFromV2 = new FormData();
+        this.reqeustSubmitFromV2.append('oldImage',  this.image11File, this.image11File.name);
+        this.reqeustSubmitFromV2.append('newImage', this.image22File, this.image22File.name);
+        this.reqeustSubmitFromV2.append('threshold', this.imageCompareV2.value.threshold);
+        this.reqeustSubmitFromV2.append('rectangleLineWidth', this.imageCompareV2.value.rectangleLineWidth);
+        this.reqeustSubmitFromV2.append('fillDifferenceRectangles', this.imageCompareV2.value.fillDifferenceRectangles);
+        this.reqeustSubmitFromV2.append('percentOpacityDifferenceRectangles', this.imageCompareV2.value.percentOpacityDifferenceRectangles);
+        this.reqeustSubmitFromV2.append('fillExcludedRectangles', this.imageCompareV2.value.fillExcludedRectangles);
+        this.reqeustSubmitFromV2.append('percentOpacityExcludedRectangles', this.imageCompareV2.value.percentOpacityExcludedRectangles);
+        this.reqeustSubmitFromV2.append('maximalRectangleCount', this.imageCompareV2.value.maximalRectangleCount);
+        this.reqeustSubmitFromV2.append('minimalRectangleSize', this.imageCompareV2.value.minimalRectangleSize);
+        this.reqeustSubmitFromV2.append('pixelToleranceLevel', this.imageCompareV2.value.pixelToleranceLevel);
+        this.reqeustSubmitFromV2.append('drawExcludedRectangles', this.imageCompareV2.value.drawExcludedRectangles);
+        this.reqeustSubmitFromV2.append('allowingPercentOfDifferentPixels', this.imageCompareV2.value.allowingPercentOfDifferentPixels);
+
+        this.captchaService.imageReaderV2(this.reqeustSubmitFromV2)
+            .pipe(take(1))
+            .subscribe(
+                (response: any) => {
+                    this.resultImageV2 = 'data:image/png;base64,' + response.data;
+                    this.extData = response.ext;
+                }, (error) => {
+                    this.message = error.error.message;
+                    console.log('Error :- ' + JSON.stringify(error));
+            });
+    }
+
+
+    public compareImgV3(): void {
+        this.reqeustSubmitFromV3 = new FormData();
+        this.reqeustSubmitFromV3.append('oldImage',  this.image111File, this.image111File.name);
+        this.reqeustSubmitFromV3.append('newImage', this.image222File, this.image222File.name);
+        this.reqeustSubmitFromV3.append('threshold', this.imageCompareV3.value.threshold);
+        this.reqeustSubmitFromV3.append('rectangleLineWidth', this.imageCompareV3.value.rectangleLineWidth);
+        this.reqeustSubmitFromV3.append('fillDifferenceRectangles', this.imageCompareV3.value.fillDifferenceRectangles);
+        this.reqeustSubmitFromV3.append('percentOpacityDifferenceRectangles', this.imageCompareV3.value.percentOpacityDifferenceRectangles);
+        this.reqeustSubmitFromV3.append('fillExcludedRectangles', this.imageCompareV3.value.fillExcludedRectangles);
+        this.reqeustSubmitFromV3.append('percentOpacityExcludedRectangles', this.imageCompareV3.value.percentOpacityExcludedRectangles);
+        this.reqeustSubmitFromV3.append('maximalRectangleCount', this.imageCompareV3.value.maximalRectangleCount);
+        this.reqeustSubmitFromV3.append('minimalRectangleSize', this.imageCompareV3.value.minimalRectangleSize);
+        this.reqeustSubmitFromV3.append('pixelToleranceLevel', this.imageCompareV3.value.pixelToleranceLevel);
+        this.reqeustSubmitFromV3.append('drawExcludedRectangles', this.imageCompareV3.value.drawExcludedRectangles);
+        this.reqeustSubmitFromV3.append('allowingPercentOfDifferentPixels', this.imageCompareV3.value.allowingPercentOfDifferentPixels);
+
+        this.captchaService.imageReaderV2(this.reqeustSubmitFromV3)
+            .pipe(take(1))
+            .subscribe(
+                (response: any) => {
+                    this.resultImageV3 = 'data:image/png;base64,' + response.data;
+                    this.extData = response.ext;
+                }, (error) => {
+                    this.message = error.error.message;
+                    console.log('Error :- ' + JSON.stringify(error));
+            });
+    }
 }

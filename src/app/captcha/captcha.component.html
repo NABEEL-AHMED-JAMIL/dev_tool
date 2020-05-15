@@ -96,7 +96,7 @@
                             </div>
                         </div> -->
                         <div class="tab-pane panel-body active row" id="tab_default_1">
-                            <form [formGroup]="imageCompare" (ngSubmit)="compareImg()">
+                            <form [formGroup]="imageCompareV1" (ngSubmit)="compareImgV1()">
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <label>Compare Image</label>
@@ -112,11 +112,13 @@
                                             (change)="addFileV1($event.target.files[0], 2)"
                                             placeholder="Enter Image" accept="image/*">
                                     </div>
-                                    <div class="col-sm-1">
-                                        <label>Threshold</label>
-                                        <input type="number" class="form-control" formControlName="threshold">
+                                    <div class="col-sm-2">
+                                        <input type="submit" class="form-control" value="Process Image"
+                                        [disabled]="imageCompareV1?.invalid" style="width:90%;margin-top:23px;">
+                                        <!-- <label>Threshold</label>
+                                        <input type="number" class="form-control" formControlName="threshold"> -->
                                     </div>
-                                    <div class="col-sm-1">
+                                    <!-- <div class="col-sm-1">
                                         <label>RLW</label>
                                         <input type="number" class="form-control" formControlName="rectangleLineWidth">
                                     </div>
@@ -127,10 +129,10 @@
                                     <div class="col-sm-2">
                                         <label>POE Rectangles</label>
                                         <input type="number" step="any" class="form-control" formControlName="percentOpacityExcludedRectangles">
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <br>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-sm-1">
                                         <label>MR Count</label>
                                         <input type="number" class="form-control" formControlName="maximalRectangleCount">
@@ -164,10 +166,195 @@
                                             value="Process Image" [disabled]="imageCompare?.invalid"
                                             style="width:90%;margin-top:23px;">
                                     </div>
-                                </div>
+                                </div> -->
                             </form>
-                            <hr>
-                            <table *ngIf="extData" class="table table-bordered">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div *ngIf="image1">
+                                        <p><b>Compare Image</b></p>
+                                        <img [src]="image1" height="300px" width="380px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div *ngIf="image2">
+                                        <p><b>Real Image</b></p>
+                                        <img [src]="image2" height="300px" width="380px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div *ngIf="resultImageV1">
+                                        <p><b>Result Image</b></p>
+                                        <img [src]="resultImageV1" height="300px" width="380px">
+                                    </div>
+                                </div>
+                            </div>
+                            <form [formGroup]="imageCompareV2" (ngSubmit)="compareImgV2()">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label>Compare Image</label>
+                                        <input type="file" class="form-control" 
+                                            formControlName="oldImage" style="padding:4px 12px;" 
+                                            (change)="addFileV2($event.target.files[0], 1)" 
+                                            placeholder="Enter Image" accept="image/*">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label>Real Image</label>
+                                        <input type="file" class="form-control"
+                                            formControlName="newImage" style="padding:4px 12px;"
+                                            (change)="addFileV2($event.target.files[0], 2)"
+                                            placeholder="Enter Image" accept="image/*">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="submit" class="form-control"
+                                        value="Process Image" [disabled]="imageCompareV2?.invalid"
+                                        style="width:90%;margin-top:23px;">
+                                        <!-- <label>Threshold</label>
+                                        <input type="number" class="form-control" formControlName="threshold"> -->
+                                    </div>
+                                    <!-- <div class="col-sm-1">
+                                        <label>RLW</label>
+                                        <input type="number" class="form-control" formControlName="rectangleLineWidth">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>POD Rectangles</label>
+                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityDifferenceRectangles">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>POE Rectangles</label>
+                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityExcludedRectangles">
+                                    </div> -->
+                                </div>
+                                <br>
+                                <!-- <div class="row">
+                                    <div class="col-sm-1">
+                                        <label>MR Count</label>
+                                        <input type="number" class="form-control" formControlName="maximalRectangleCount">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>MR Size</label>
+                                        <input type="number" class="form-control" formControlName="minimalRectangleSize">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>PT Level</label>
+                                        <input type="number" class="form-control" formControlName="pixelToleranceLevel">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>APD Pixels</label>
+                                        <input type="number" class="form-control" formControlName="allowingPercentOfDifferentPixels">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>FDR</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="fillDifferenceRectangles">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>FER</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="fillExcludedRectangles">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>DER</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="drawExcludedRectangles">
+                                    </div>                                 
+                                    <div class="col-sm-5">
+                                        <input type="submit" class="form-control"
+                                            value="Process Image" [disabled]="imageCompare?.invalid"
+                                            style="width:90%;margin-top:23px;">
+                                    </div>
+                                </div> -->
+                            </form>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div *ngIf="image11">
+                                        <p><b>Compare Image</b></p>
+                                        <img [src]="image11" height="300px" width="380px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div *ngIf="image22">
+                                        <p><b>Real Image</b></p>
+                                        <img [src]="image22" height="300px" width="380px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div *ngIf="resultImageV2">
+                                        <p><b>Result Image</b></p>
+                                        <img [src]="resultImageV2" height="300px" width="380px">
+                                    </div>
+                                </div>
+                            </div>
+                            <form [formGroup]="imageCompareV3" (ngSubmit)="compareImgV3()">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label>Compare Image</label>
+                                        <input type="file" class="form-control" 
+                                            formControlName="oldImage" style="padding:4px 12px;" 
+                                            (change)="addFileV3($event.target.files[0], 1)" 
+                                            placeholder="Enter Image" accept="image/*">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label>Real Image</label>
+                                        <input type="file" class="form-control"
+                                            formControlName="newImage" style="padding:4px 12px;"
+                                            (change)="addFileV3($event.target.files[0], 2)"
+                                            placeholder="Enter Image" accept="image/*">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="submit" class="form-control"
+                                        value="Process Image" [disabled]="imageCompareV3?.invalid"
+                                        style="width:90%;margin-top:23px;">
+                                        <!-- <label>Threshold</label>
+                                        <input type="number" class="form-control" formControlName="threshold"> -->
+                                    </div>
+                                    <!-- <div class="col-sm-1">
+                                        <label>RLW</label>
+                                        <input type="number" class="form-control" formControlName="rectangleLineWidth">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>POD Rectangles</label>
+                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityDifferenceRectangles">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>POE Rectangles</label>
+                                        <input type="number" step="any" class="form-control" formControlName="percentOpacityExcludedRectangles">
+                                    </div> -->
+                                </div>
+                                <br>
+                                <!-- <div class="row">
+                                    <div class="col-sm-1">
+                                        <label>MR Count</label>
+                                        <input type="number" class="form-control" formControlName="maximalRectangleCount">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>MR Size</label>
+                                        <input type="number" class="form-control" formControlName="minimalRectangleSize">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>PT Level</label>
+                                        <input type="number" class="form-control" formControlName="pixelToleranceLevel">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>APD Pixels</label>
+                                        <input type="number" class="form-control" formControlName="allowingPercentOfDifferentPixels">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>FDR</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="fillDifferenceRectangles">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>FER</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="fillExcludedRectangles">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>DER</label><br>
+                                        <input type="checkbox" class="form-check-input" formControlName="drawExcludedRectangles">
+                                    </div>                                 
+                                    <div class="col-sm-5">
+                                        <input type="submit" class="form-control"
+                                            value="Process Image" [disabled]="imageCompare?.invalid"
+                                            style="width:90%;margin-top:23px;">
+                                    </div>
+                                </div> -->
+                            </form>
+                            <!-- <table *ngIf="extData" class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Status</th>
@@ -184,24 +371,24 @@
                                         <td>{{extData.rect_size}}</td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> -->
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div *ngIf="image1">
+                                    <div *ngIf="image111">
                                         <p><b>Compare Image</b></p>
-                                        <img [src]="image1" height="300px" width="380px">
+                                        <img [src]="image111" height="300px" width="380px">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div *ngIf="image2">
+                                    <div *ngIf="image222">
                                         <p><b>Real Image</b></p>
-                                        <img [src]="image2" height="300px" width="380px">
+                                        <img [src]="image222" height="300px" width="380px">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div *ngIf="resultImage">
+                                    <div *ngIf="resultImageV3">
                                         <p><b>Result Image</b></p>
-                                        <img [src]="resultImage" height="300px" width="380px">
+                                        <img [src]="resultImageV3" height="300px" width="380px">
                                     </div>
                                 </div>
                             </div>
@@ -210,6 +397,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
+    </div>
 </div>
 <br>
